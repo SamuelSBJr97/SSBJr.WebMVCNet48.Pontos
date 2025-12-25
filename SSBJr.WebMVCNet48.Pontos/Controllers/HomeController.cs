@@ -13,6 +13,18 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly HomeRepository _repository;
+
+        public HomeController()
+            : this(DependencyResolver.Current.GetService<HomeRepository>())
+        {
+        }
+
+        public HomeController(HomeRepository repository)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        }
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -47,7 +59,6 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                     return invalidJson;
                 }
 
-                var repository = new HomeRepository();
                 string outQuery = "";
 
                 // Decisão de alto volume baseada em dados em cache da sessão
@@ -63,7 +74,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                 if (isHighVolume)
                 {
                     // Alto volume: buscar página diretamente do banco, sem busca textual e sem cache
-                    pagedData = repository.GetConsultaPlacaDataPaged(filter, filter.Start, filter.Length > 0 ? filter.Length : 50, out outQuery);
+                    pagedData = _repository.GetConsultaPlacaDataPaged(filter, filter.Start, filter.Length > 0 ? filter.Length : 50, out outQuery);
                     recordsFiltered = sessionData.Count; // usa tamanho do cache existente como total conhecido
                     recordsTotal = sessionData.Count;
                 }
@@ -80,7 +91,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                     else
                     {
                         // Buscar do banco
-                        allData = repository.GetConsultaPlacaData(filter, out outQuery);
+                        allData = _repository.GetConsultaPlacaData(filter, out outQuery);
 
                         // Se exceder 250k, não salvar na sessão e tratar como alto volume nas próximas requisições
                         if (allData != null && allData.Count > 250000)
@@ -190,8 +201,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
         {
             try
             {
-                var repository = new HomeRepository();
-                var data = repository.GetConsultaPlacaMotoristas(termoMotorista ?? "", termoRfid ?? "", skip, take, nullFilter ?? "", empresa ?? "", fieldType ?? "motorista");
+                var data = _repository.GetConsultaPlacaMotoristas(termoMotorista ?? "", termoRfid ?? "", skip, take, nullFilter ?? "", empresa ?? "", fieldType ?? "motorista");
 
                 return Json(new
                 {
@@ -211,8 +221,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
         {
             try
             {
-                var repository = new HomeRepository();
-                var data = repository.GetConsultaPlacaPlacas(termo ?? "", skip, take, nullFilter ?? "", empresa ?? "");
+                var data = _repository.GetConsultaPlacaPlacas(termo ?? "", skip, take, nullFilter ?? "", empresa ?? "");
 
                 return Json(new
                 {
@@ -231,8 +240,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
         {
             try
             {
-                var repository = new HomeRepository();
-                var empresas = repository.GetConsultaPlacaEmpresas(termo, skip, take, nullFilter ?? "");
+                var empresas = _repository.GetConsultaPlacaEmpresas(termo, skip, take, nullFilter ?? "");
 
                 return Json(new
                 {
@@ -274,8 +282,6 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                     Placa = placa
                 };
 
-                var repository = new HomeRepository();
-
                 // Gerar nome do arquivo
                 var fileName = $"STI - Pontos por Motorista.xlsx";
 
@@ -293,7 +299,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                 {
                     // Alto volume: streaming direto do banco, sem materializar lista
                     string outQuery;
-                    var streamEnumerable = repository.GetConsultaPlacaDataStream(filter, out outQuery);
+                    var streamEnumerable = _repository.GetConsultaPlacaDataStream(filter, out outQuery);
                     ExcelWebExportHelper.ExportToExcel(Response.OutputStream, streamEnumerable, "Pontos por Motorista");
                 }
                 else
@@ -303,7 +309,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                     if (allData == null)
                     {
                         string outQuery;
-                        allData = repository.GetConsultaPlacaData(filter, out outQuery);
+                        allData = _repository.GetConsultaPlacaData(filter, out outQuery);
                         if (allData != null && allData.Count <= 250000)
                         {
                             Session[cacheKey] = allData;
