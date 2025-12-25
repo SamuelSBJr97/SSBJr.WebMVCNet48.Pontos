@@ -1,4 +1,4 @@
-(function () {
+Ôªø(function () {
     'use strict';
 
     let Toast;
@@ -45,16 +45,16 @@
         $('.showSpinnerCarregando').each(function () {
             const $element = $(this);
 
-            // Verificar se È um bot„o ou elemento pai
+            // Verificar se √© um bot√£o ou elemento pai
             const $button = $element.is('button') ? $element : $element.closest('button');
 
             if ($button.length) {
-                // Adicionar spinner se ainda n„o existe
+                // Adicionar spinner se ainda n√£o existe
                 if (!$button.find('.loading-spinner').length) {
                     $button.append(' <i class="fas fa-spinner fa-spin loading-spinner"></i>');
                 }
             } else {
-                // Para elementos que n„o s„o botıes, adicionar spinner ao lado
+                // Para elementos que n√£o s√£o bot√µes, adicionar spinner ao lado
                 if (!$element.next('.loading-spinner').length) {
                     $element.after(' <i class="fas fa-spinner fa-spin loading-spinner"></i>');
                 }
@@ -67,14 +67,14 @@
         $('.showSpinnerCarregando').each(function () {
             const $element = $(this);
 
-            // Verificar se È um bot„o ou elemento pai
+            // Verificar se √© um bot√£o ou elemento pai
             const $button = $element.is('button') ? $element : $element.closest('button');
 
             if ($button.length) {
                 // Remover spinner
                 $button.find('.loading-spinner').remove();
             } else {
-                // Para elementos que n„o s„o botıes, remover spinner ao lado
+                // Para elementos que n√£o s√£o bot√µes, remover spinner ao lado
                 $element.next('.loading-spinner').remove();
             }
         });
@@ -97,9 +97,9 @@
                 applyLabel: 'Aplicar',
                 format: 'DD/MM/YYYY HH:mm',
                 separator: ' - ',
-                daysOfWeek: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S·b'],
+                daysOfWeek: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'S√°b'],
                 monthNames: [
-                    'Janeiro', 'Fevereiro', 'MarÁo', 'Abril', 'Maio', 'Junho', 'Julho',
+                    'Janeiro', 'Fevereiro', 'Mar√ßo', 'Abril', 'Maio', 'Junho', 'Julho',
                     'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
                 ],
                 firstDay: 1
@@ -207,7 +207,7 @@
                 $rfidSelect.data('resetSelectToDefault')();
             }
 
-            // Limpar matrÌcula
+            // Limpar matr√≠cula
             $('#matricula').val('');
         });
     }
@@ -221,11 +221,11 @@
             currentPage: 1,
             loading: false,
             hasMore: true,
-            currentSearchMotorista: '', // Termo de busca especÌfico para motorista
-            currentSearchRfid: '', // Termo de busca especÌfico para RFID
+            currentSearchMotorista: '', // Termo de busca espec√≠fico para motorista
+            currentSearchRfid: '', // Termo de busca espec√≠fico para RFID
             debounceTimer: null,
-            currentFieldType: '', // 'motorista' ou 'rfid' para indicar qual campo est· sendo pesquisado
-            currentNullFilter: '__all__' // Filtro inicial È __all__
+            currentFieldType: '', // 'motorista' ou 'rfid' para indicar qual campo est√° sendo pesquisado
+            currentNullFilter: '__all__' // Filtro inicial √© __all__
         };
 
         function clearOptions() {
@@ -233,7 +233,7 @@
             $rfidSelect.find('option').remove();
             motoristaRfidDataset = [];
 
-            // Adicionar opÁ„o padr„o "Nenhum filtro"
+            // Adicionar op√ß√£o padr√£o "Nenhum filtro"
             $motoristaSelect.append(new Option('Nenhum filtro', '__all__', false, false));
             $rfidSelect.append(new Option('Nenhum filtro', '__all__', false, false));
         }
@@ -251,7 +251,7 @@
                     // Armazenar dados completos no dataset
                     motoristaRfidDataset.push(item);
 
-                    // Verificar se motorista È nulo/vazio
+                    // Verificar se motorista √© nulo/vazio
                     const motoristaDescricao = item.MotoristaDescricao;
                     const isMotoristaEmpty = !motoristaDescricao || motoristaDescricao.trim() === '';
 
@@ -259,15 +259,15 @@
                         hasNullMotorista = true;
                     }
 
-                    // Adicionar opÁ„o no select de motorista
+                    // Adicionar op√ß√£o no select de motorista
                     const motoristaOption = document.createElement('option');
                     const motoristaText = isMotoristaEmpty ? 'Nulo/Vazio' : item.MotoristaDescricao;
-                    motoristaOption.value = motoristaText; // value sempre a descriÁ„o
+                    motoristaOption.value = motoristaText; // value sempre a descri√ß√£o
                     motoristaOption.textContent = motoristaText;
                     motoristaOption.setAttribute('data-motorista-id', item.MotoristaId != null ? String(item.MotoristaId) : '');
                     motoristaFragment.appendChild(motoristaOption);
 
-                    // Verificar se RFID È nulo/vazio
+                    // Verificar se RFID √© nulo/vazio
                     const rfidDescricao = item.RfidDescricao;
                     const isRfidEmpty = !rfidDescricao || rfidDescricao.trim() === '';
 
@@ -275,10 +275,10 @@
                         hasNullRfid = true;
                     }
 
-                    // Adicionar opÁ„o no select de RFID
+                    // Adicionar op√ß√£o no select de RFID
                     const rfidOption = document.createElement('option');
                     const rfidText = isRfidEmpty ? 'Nulo/Vazio' : item.RfidDescricao;
-                    rfidOption.value = rfidText; // value sempre a descriÁ„o
+                    rfidOption.value = rfidText; // value sempre a descri√ß√£o
                     rfidOption.textContent = rfidText;
                     rfidOption.setAttribute('data-motorista-id', item.MotoristaId != null ? String(item.MotoristaId) : '');
                     rfidFragment.appendChild(rfidOption);
@@ -288,9 +288,9 @@
             $motoristaSelect[0].appendChild(motoristaFragment);
             $rfidSelect[0].appendChild(rfidFragment);
 
-            // Se encontrou itens nulos/vazios, garantir que a opÁ„o "Nulo/Vazio" existe (evitar duplicatas)
+            // Se encontrou itens nulos/vazios, garantir que a op√ß√£o "Nulo/Vazio" existe (evitar duplicatas)
             if (hasNullMotorista) {
-                // Verificar se j· existe a opÁ„o "Nulo/Vazio" (alÈm das que acabamos de adicionar)
+                // Verificar se j√° existe a op√ß√£o "Nulo/Vazio" (al√©m das que acabamos de adicionar)
                 const existingNullOptions = $motoristaSelect.find('option[value="Nulo/Vazio"]');
                 if (existingNullOptions.length > 1) {
                     // Remover duplicatas, mantendo apenas a primeira
@@ -299,7 +299,7 @@
             }
 
             if (hasNullRfid) {
-                // Verificar se j· existe a opÁ„o "Nulo/Vazio" (alÈm das que acabamos de adicionar)
+                // Verificar se j√° existe a op√ß√£o "Nulo/Vazio" (al√©m das que acabamos de adicionar)
                 const existingNullOptions = $rfidSelect.find('option[value="Nulo/Vazio"]');
                 if (existingNullOptions.length > 1) {
                     // Remover duplicatas, mantendo apenas a primeira
@@ -313,22 +313,22 @@
 
         function carregarPaginaMotoristaRfid(search, fieldType, nullFilter) {
             search = search || '';
-            fieldType = fieldType || 'motorista'; // padr„o È motorista
-            nullFilter = nullFilter || '__all__'; // padr„o È __all__
+            fieldType = fieldType || 'motorista'; // padr√£o √© motorista
+            nullFilter = nullFilter || '__all__'; // padr√£o √© __all__
 
             // Verificar se mudou o termo de busca ou o tipo de campo
             const currentSearch = fieldType === 'motorista' ? state.currentSearchMotorista : state.currentSearchRfid;
             if (search !== currentSearch || fieldType !== state.currentFieldType) {
-                // Atualizar o termo de busca especÌfico do campo
+                // Atualizar o termo de busca espec√≠fico do campo
                 if (fieldType === 'motorista') {
                     state.currentSearchMotorista = search;
-                    // Ao filtrar motorista (termo n„o vazio), limpar filtro de RFID
+                    // Ao filtrar motorista (termo n√£o vazio), limpar filtro de RFID
                     if (search) {
                         state.currentSearchRfid = '';
                     }
                 } else {
                     state.currentSearchRfid = search;
-                    // Ao filtrar RFID (termo n„o vazio), limpar filtro de motorista
+                    // Ao filtrar RFID (termo n√£o vazio), limpar filtro de motorista
                     if (search) {
                         state.currentSearchMotorista = '';
                     }
@@ -363,7 +363,7 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    // Enviar termos separados para paginaÁ„o cruzada
+                    // Enviar termos separados para pagina√ß√£o cruzada
                     termoMotorista: state.currentSearchMotorista,
                     termoRfid: state.currentSearchRfid,
                     skip: skip,
@@ -385,7 +385,7 @@
                     Toast.fire({
                         icon: 'error',
                         title: 'Erro',
-                        text: 'N„o foi possÌvel carregar os motoristas/RFIDs. Tente novamente.'
+                        text: 'N√£o foi poss√≠vel carregar os motoristas/RFIDs. Tente novamente.'
                     });
                 },
                 complete: function () {
@@ -416,7 +416,7 @@
             $rfidSelect.selectpicker('refresh');
         }
 
-        // Adicionar opÁ„o padr„o inicial "Nenhum filtro"
+        // Adicionar op√ß√£o padr√£o inicial "Nenhum filtro"
         $motoristaSelect.append(new Option('Nenhum filtro', '__all__', true, true));
         $rfidSelect.append(new Option('Nenhum filtro', '__all__', true, true));
         $motoristaSelect.selectpicker('refresh');
@@ -429,7 +429,7 @@
             // Ao digitar no motorista, limpar termo do RFID
             state.currentSearchRfid = '';
             state.debounceTimer = setTimeout(function () {
-                carregarPaginaMotoristaRfid(value, 'motorista', '__all__'); // Indica que È busca por motorista com filtro __all__
+                carregarPaginaMotoristaRfid(value, 'motorista', '__all__'); // Indica que √© busca por motorista com filtro __all__
             }, DEBOUNCE_DELAY);
         });
 
@@ -440,13 +440,13 @@
             // Ao digitar no RFID, limpar termo do motorista
             state.currentSearchMotorista = '';
             state.debounceTimer = setTimeout(function () {
-                carregarPaginaMotoristaRfid(value, 'rfid', '__all__'); // Indica que È busca por RFID com filtro __all__
+                carregarPaginaMotoristaRfid(value, 'rfid', '__all__'); // Indica que √© busca por RFID com filtro __all__
             }, DEBOUNCE_DELAY);
         });
 
         // Scroll para carregar mais - motorista
         $motoristaSelect.on('shown.bs.select', function () {
-            // Ao abrir o filtro de motorista, limpar matrÌcula
+            // Ao abrir o filtro de motorista, limpar matr√≠cula
             $('#matricula').val('');
             if (state.currentPage === 1 && $motoristaSelect.find('option').length === 1) {
                 carregarPaginaMotoristaRfid('', 'motorista', '__all__');
@@ -455,7 +455,7 @@
             const $menu = $(this).parent().find('.dropdown-menu .inner');
             $menu.off('scroll.pagination').on('scroll.pagination', function () {
                 if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
-                    // Usar o termo de busca especÌfico do motorista
+                    // Usar o termo de busca espec√≠fico do motorista
                     carregarPaginaMotoristaRfid(state.currentSearchMotorista, 'motorista', state.currentNullFilter || '__all__');
                 }
             });
@@ -463,7 +463,7 @@
 
         // Scroll para carregar mais - RFID
         $rfidSelect.on('shown.bs.select', function () {
-            // Ao abrir o filtro de RFID, limpar matrÌcula
+            // Ao abrir o filtro de RFID, limpar matr√≠cula
             $('#matricula').val('');
             if (state.currentPage === 1 && $rfidSelect.find('option').length === 1) {
                 carregarPaginaMotoristaRfid('', 'rfid', '__all__');
@@ -472,17 +472,17 @@
             const $menu = $(this).parent().find('.dropdown-menu .inner');
             $menu.off('scroll.pagination').on('scroll.pagination', function () {
                 if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
-                    // Usar o termo de busca especÌfico do RFID
+                    // Usar o termo de busca espec√≠fico do RFID
                     carregarPaginaMotoristaRfid(state.currentSearchRfid, 'rfid', state.currentNullFilter || '__all__');
                 }
             });
         });
 
-        // Armazenar funÁ„o de reset
+        // Armazenar fun√ß√£o de reset
         $motoristaSelect.data('resetSelectToDefault', resetToDefault);
         $rfidSelect.data('resetSelectToDefault', resetToDefault);
 
-        // Sincronizar seleÁ„o entre motorista e rfid
+        // Sincronizar sele√ß√£o entre motorista e rfid
         $motoristaSelect.on('changed.bs.select', function () {
             syncMotoristaRfidSelection('motorista');
         });
@@ -498,7 +498,7 @@
         const motoristaIdAttr = $selectedOpt.attr('data-motorista-id');
         const motoristaId = motoristaIdAttr && motoristaIdAttr.trim() !== '' ? motoristaIdAttr : null;
 
-        // Se n„o selecionou nada ou selecionou "Nenhum filtro", limpar campos relacionados
+        // Se n√£o selecionou nada ou selecionou "Nenhum filtro", limpar campos relacionados
         if (!sourceValue || sourceValue === '__all__') {
             if (sourceField === 'motorista') {
                 $('#rfid').val('__all__').selectpicker('refresh');
@@ -509,7 +509,7 @@
             return;
         }
 
-        // SincronizaÁ„o baseada em data-motorista-id como chave
+        // Sincroniza√ß√£o baseada em data-motorista-id como chave
         let record = null;
         if (motoristaId) {
             if (sourceField === 'motorista') {
@@ -527,7 +527,7 @@
 
         if (motoristaId && record) {
             if (sourceField === 'motorista') {
-                // Garantir que a opÁ„o de RFID exista; se n„o, adicionar
+                // Garantir que a op√ß√£o de RFID exista; se n√£o, adicionar
                 const $rfid = $('#rfid');
                 const rfidText = record && record.RfidDescricao ? record.RfidDescricao : 'Nulo/Vazio';
                 if (!$rfid.find('option[value="' + rfidText.replace(/"/g, '\\"') + '"]').length) {
@@ -538,7 +538,7 @@
                 }
                 $rfid.val(rfidText).selectpicker('refresh');
             } else {
-                // Selecionou RFID: garantir que a opÁ„o de motorista exista; se n„o, adicionar
+                // Selecionou RFID: garantir que a op√ß√£o de motorista exista; se n√£o, adicionar
                 const $motorista = $('#motorista');
                 const motText = record && record.MotoristaDescricao ? record.MotoristaDescricao : 'Nulo/Vazio';
                 if (!$motorista.find('option[value="' + motText.replace(/"/g, '\\"') + '"]').length) {
@@ -550,10 +550,10 @@
                 $motorista.val(motText).selectpicker('refresh');
             }
 
-            // Atualizar matrÌcula
+            // Atualizar matr√≠cula
             $('#matricula').val(record && record.Matricula ? record.Matricula : '-');
         } else {
-            // Fallback: limpar outro filtro e matrÌcula
+            // Fallback: limpar outro filtro e matr√≠cula
             if (sourceField === 'motorista') {
                 $('#rfid').val('__all__').selectpicker('refresh');
             } else {
@@ -563,7 +563,7 @@
         }
     }
 
-    // ========== SELECT COM PAGINA«√O ==========
+    // ========== SELECT COM PAGINA√á√ÉO ==========
     function carregarSelectComPaginacao(url, element, pageSize, extraDataFn, isMotoristaRfid, fieldType) {
         pageSize = pageSize || 50;
         const $select = $(element);
@@ -580,7 +580,7 @@
         };
 
         function clearNonSelectedOptions() {
-            // Limpar todas as opÁıes exceto a primeira (vazia)
+            // Limpar todas as op√ß√µes exceto a primeira (vazia)
             $select.find('option').remove();
         }
 
@@ -592,7 +592,7 @@
 
                 // Se for motorista ou rfid, armazenar no dataset e popular ambos os selects
                 if (isMotoristaRfid && item.FullData) {
-                    // Verificar se j· existe no dataset
+                    // Verificar se j√° existe no dataset
                     const existingIndex = motoristaRfidDataset.findIndex(function (d) {
                         return d.MotoristaId === item.FullData.MotoristaId && d.RfidId === item.FullData.RfidId;
                     });
@@ -621,7 +621,7 @@
                         $otherSelect.selectpicker('refresh');
                     }
                 } else {
-                    // Para outros selects (n„o motorista/rfid)
+                    // Para outros selects (n√£o motorista/rfid)
                     const key = String(item.Key);
                     if (!$select.find('option[value="' + key.replace(/"/g, '\\"') + '"]').length) {
                         const isSelected = String(selectState.selectedValue) === key;
@@ -694,7 +694,7 @@
                     Toast.fire({
                         icon: 'error',
                         title: 'Erro',
-                        text: 'N„o foi possÌvel carregar os dados. Tente novamente.'
+                        text: 'N√£o foi poss√≠vel carregar os dados. Tente novamente.'
                     });
                 },
                 complete: function () {
@@ -713,19 +713,19 @@
             selectState.hasMore = true;
             selectState.selectedValue = '';
 
-            // Limpar todas as opÁıes
+            // Limpar todas as op√ß√µes
             $select.find('option').remove();
 
-            // Adicionar opÁ„o padr„o "Nenhum filtro"
+            // Adicionar op√ß√£o padr√£o "Nenhum filtro"
             $select.append(new Option('Nenhum filtro', '', true, true));
 
             // Refresh do selectpicker
             $select.selectpicker('refresh');
 
-            // N„o carregar dados aqui - ser· carregado quando o select for aberto
+            // N√£o carregar dados aqui - ser√° carregado quando o select for aberto
         }
 
-        // Adicionar opÁ„o padr„o "Nenhum filtro" sem carregar dados
+        // Adicionar op√ß√£o padr√£o "Nenhum filtro" sem carregar dados
         $select.find('option').remove();
         $select.append(new Option('Nenhum filtro', '__all__', true, true));
         $select.selectpicker('refresh');
@@ -744,13 +744,13 @@
             // Buscar valor selecionado atual
             const currentValue = $select.val();
 
-            // Se tem valor selecionado mas n„o h· opÁıes carregadas, carregar a primeira p·gina
+            // Se tem valor selecionado mas n√£o h√° op√ß√µes carregadas, carregar a primeira p√°gina
             if (currentValue && $select.find('option[value="' + currentValue + '"]').length === 0) {
-                // Carregar opÁ„o selecionada
+                // Carregar op√ß√£o selecionada
                 selectState.selectedValue = currentValue;
                 carregarPagina('');
             } else if (selectState.currentPage === 1 && $select.find('option').length === 1) {
-                // Se sÛ tem a opÁ„o "Nenhum filtro", carregar primeira p·gina de dados
+                // Se s√≥ tem a op√ß√£o "Nenhum filtro", carregar primeira p√°gina de dados
                 carregarPagina('');
             }
 
@@ -767,7 +767,7 @@
             selectState.selectedValue = $select.val() || '';
         });
 
-        // Armazenar funÁ„o de reset no elemento
+        // Armazenar fun√ß√£o de reset no elemento
         $select.data('resetSelectToDefault', resetToDefault);
     }
 
@@ -788,10 +788,10 @@
                 // Habilitar carregamento de dados e recarregar tabela
                 shouldLoadData = true;
 
-                // Resetar o estado do DataTable para forÁar Draw = 1
+                // Resetar o estado do DataTable para for√ßar Draw = 1
                 loadNewDataServer = true;
 
-                // ForÁar nova busca do banco resetando para p·gina 1
+                // For√ßar nova busca do banco resetando para p√°gina 1
                 placarTable.ajax.reload(null, true);
             }
         });
@@ -824,15 +824,15 @@
         const periodoData = $('#field-periodoData').val();
 
         // Validar que pelo menos um de Motorista ou RFID foi preenchido
-        // N„o aceitar "Nenhum filtro" como seleÁ„o v·lida
-        // Aceitar value vazio ('') como v·lido (representa "Nulo/Vazio")
+        // N√£o aceitar "Nenhum filtro" como sele√ß√£o v√°lida
+        // Aceitar value vazio ('') como v√°lido (representa "Nulo/Vazio")
         const hasValidMotorista = (motorista !== null && motorista !== '__all__');
         const hasValidRFid = (rfid !== null && rfid !== '__all__');
 
         if (!hasValidMotorista && !hasValidRFid) {
             Toast.fire({
                 icon: 'error',
-                title: 'Campo obrigatÛrio',
+                title: 'Campo obrigat√≥rio',
                 text: 'Selecione um Motorista ou RFID'
             });
             return false;
@@ -841,20 +841,20 @@
         if (!periodoData || periodoData.trim() === '') {
             Toast.fire({
                 icon: 'error',
-                title: 'Campo obrigatÛrio',
-                text: 'Informe o perÌodo (data inicial e final)'
+                title: 'Campo obrigat√≥rio',
+                text: 'Informe o per√≠odo (data inicial e final)'
             });
             return false;
         }
 
-        // Validar se o daterangepicker foi inicializado e tem datas v·lidas
+        // Validar se o daterangepicker foi inicializado e tem datas v√°lidas
         try {
             const picker = $('#field-periodoData').data('daterangepicker');
             if (!picker || !picker.startDate || !picker.endDate) {
                 Toast.fire({
                     icon: 'error',
-                    title: 'Campo obrigatÛrio',
-                    text: 'Selecione um perÌodo v·lido'
+                    title: 'Campo obrigat√≥rio',
+                    text: 'Selecione um per√≠odo v√°lido'
                 });
                 return false;
             }
@@ -862,8 +862,8 @@
             if (picker.startDate.isAfter(picker.endDate)) {
                 Toast.fire({
                     icon: 'error',
-                    title: 'PerÌodo inv·lido',
-                    text: 'A data inicial n„o pode ser maior que a data final'
+                    title: 'Per√≠odo inv√°lido',
+                    text: 'A data inicial n√£o pode ser maior que a data final'
                 });
                 return false;
             }
@@ -871,7 +871,7 @@
             Toast.fire({
                 icon: 'error',
                 title: 'Erro',
-                text: 'Erro ao validar o perÌodo selecionado'
+                text: 'Erro ao validar o per√≠odo selecionado'
             });
             return false;
         }
@@ -893,16 +893,16 @@
     }
 
     function limparFiltros() {
-        // Limpar e resetar cada select usando a funÁ„o resetToDefault
+        // Limpar e resetar cada select usando a fun√ß√£o resetToDefault
         $('#motorista').data('resetSelectToDefault')();
         $('#rfid').data('resetSelectToDefault')();
         $('#placa').data('resetSelectToDefault')();
         $('#empresa').data('resetSelectToDefault')();
 
-        // Limpar matrÌcula
+        // Limpar matr√≠cula
         $('#matricula').val('');
 
-        // Resetar as datas padr„o no filtro global
+        // Resetar as datas padr√£o no filtro global
         setDefaultDates();
 
         currentFilter = {
@@ -916,15 +916,15 @@
     }
 
     function calculateTableHeight() {
-        // Calcular altura disponÌvel considerando header, filtros e footer
+        // Calcular altura dispon√≠vel considerando header, filtros e footer
         const windowHeight = $(window).height();
         const tableOffset = $('#placarTable').offset();
-        const footerHeight = 100; // EspaÁo para paginaÁ„o e info
+        const footerHeight = 100; // Espa√ßo para pagina√ß√£o e info
         const padding = 20; // Padding adicional
 
         if (tableOffset) {
             const availableHeight = windowHeight - tableOffset.top - footerHeight - padding;
-            return Math.max(300, availableHeight) + 'px'; // MÌnimo de 300px
+            return Math.max(300, availableHeight) + 'px'; // M√≠nimo de 300px
         }
         return '500px'; // Fallback
     }
@@ -939,7 +939,7 @@
             processing: true,
             serverSide: true, // Habilitar server-side processing
             ajax: function (data, callback, settings) {
-                // Se n„o deve carregar dados, retornar resultado vazio
+                // Se n√£o deve carregar dados, retornar resultado vazio
                 if (!shouldLoadData) {
                     callback({
                         draw: data.draw,
@@ -950,14 +950,14 @@
                     return;
                 }
 
-                // Verificar se j· h· uma requisiÁ„o em andamento
+                // Verificar se j√° h√° uma requisi√ß√£o em andamento
                 if (isLoadingDataServer) {
                     Toast.fire({
                         icon: 'info',
                         title: 'Aguarde',
-                        text: 'H· uma busca em andamento. Aguarde a conclus„o.'
+                        text: 'H√° uma busca em andamento. Aguarde a conclus√£o.'
                     });
-                    // Retornar sem fazer nova requisiÁ„o
+                    // Retornar sem fazer nova requisi√ß√£o
                     return;
                 }
 
@@ -992,11 +992,11 @@
                             Toast.fire({
                                 icon: 'warning',
                                 title: 'Nenhum resultado encontrado',
-                                text: 'N„o foram encontrados registros com os filtros aplicados.'
+                                text: 'N√£o foram encontrados registros com os filtros aplicados.'
                             });
                         }
 
-                        // Exibe informaÁıes de atualizaÁ„o
+                        // Exibe informa√ß√µes de atualiza√ß√£o
                         var debugInfo = new Date().toLocaleTimeString('pt-BR') +
                             ' - ' + json.recordsTotal.toLocaleString() + ' registros';
 
@@ -1103,9 +1103,9 @@
             language: {
                 paginate: {
                     previous: 'Anterior',
-                    next: 'PrÛximo',
+                    next: 'Pr√≥ximo',
                     first: 'Primeiro',
-                    last: '⁄ltimo'
+                    last: '√öltimo'
                 },
                 lengthMenu: 'Exibir _MENU_ resultados',
                 info: '_START_ a _END_ de _TOTAL_',
@@ -1114,7 +1114,7 @@
                 processing: 'Carregando...',
                 search: 'Pesquisar',
                 zeroRecords: 'Nenhum registro encontrado',
-                emptyTable: 'Preencha os filtros obrigatÛrios e clique em Aplicar Filtros para visualizar os dados.'
+                emptyTable: 'Preencha os filtros obrigat√≥rios e clique em Aplicar Filtros para visualizar os dados.'
             },
             searching: true,
             paging: true,
@@ -1134,23 +1134,23 @@
                     text: '<i class="fas fa-file-excel"></i> Excel',
                     className: 'btn btn-success me-2',
                     action: function (e, dt, node, config) {
-                        // Validar filtros obrigatÛrios
+                        // Validar filtros obrigat√≥rios
                         if (!shouldLoadData || !validarFiltrosObrigatorios()) {
                             Toast.fire({
                                 icon: 'warning',
-                                title: 'Filtros necess·rios',
-                                text: 'Aplique os filtros obrigatÛrios antes de exportar.'
+                                title: 'Filtros necess√°rios',
+                                text: 'Aplique os filtros obrigat√≥rios antes de exportar.'
                             });
                             $('#filtroModal').modal('show');
                             return;
                         }
 
-                        // Verificar se h· uma busca em andamento
+                        // Verificar se h√° uma busca em andamento
                         if (isLoadingData) {
                             Toast.fire({
                                 icon: 'info',
                                 title: 'Aguarde',
-                                text: 'Aguarde a conclus„o da busca atual antes de exportar.'
+                                text: 'Aguarde a conclus√£o da busca atual antes de exportar.'
                             });
                             return;
                         }
@@ -1160,7 +1160,7 @@
                             title: 'Gerando arquivo Excel...'
                         });
 
-                        // Criar formul·rio para enviar POST
+                        // Criar formul√°rio para enviar POST
                         var form = $('<form>', {
                             method: 'POST',
                             action: urlConsultaPlacaSettings.ExportConsultaPlacaXml,
@@ -1197,23 +1197,23 @@
                     text: '<i class="fas fa-sync-alt"></i>',
                     className: 'btn btn-primary',
                     action: function (e, dt, node, config) {
-                        // Validar se h· filtros obrigatÛrios aplicados
+                        // Validar se h√° filtros obrigat√≥rios aplicados
                         if (!shouldLoadData || !validarFiltrosObrigatorios()) {
                             Toast.fire({
                                 icon: 'warning',
-                                title: 'Filtros necess·rios',
-                                text: 'Aplique os filtros obrigatÛrios antes de atualizar.'
+                                title: 'Filtros necess√°rios',
+                                text: 'Aplique os filtros obrigat√≥rios antes de atualizar.'
                             });
                             $('#filtroModal').modal('show');
                             return;
                         }
 
-                        // Verificar se h· uma busca em andamento
+                        // Verificar se h√° uma busca em andamento
                         if (isLoadingData) {
                             Toast.fire({
                                 icon: 'info',
                                 title: 'Aguarde',
-                                text: 'Aguarde a conclus„o da busca atual antes de atualizar.'
+                                text: 'Aguarde a conclus√£o da busca atual antes de atualizar.'
                             });
                             return;
                         }
@@ -1224,13 +1224,13 @@
                         // Limpar tabela antes de atualizar
                         placarTable.clear().draw();
 
-                        // ForÁar nova busca do banco (Draw == 1)
+                        // For√ßar nova busca do banco (Draw == 1)
                         shouldLoadData = true;
 
-                        // Resetar o estado do DataTable para forÁar Draw = 1
+                        // Resetar o estado do DataTable para for√ßar Draw = 1
                         loadNewDataServer = true;
 
-                        placarTable.ajax.reload(null, true); // true = resetar para p·gina 1
+                        placarTable.ajax.reload(null, true); // true = resetar para p√°gina 1
                     }
                 },
             ],
@@ -1252,7 +1252,7 @@
                 }, DEBOUNCE_DELAY);
             });
 
-        // Desabilitar bot„o ao iniciar requisiÁ„o
+        // Desabilitar bot√£o ao iniciar requisi√ß√£o
         placarTable.on('preXhr.dt', function () {
             isLoadingData = true;
             showLoading();
@@ -1261,15 +1261,15 @@
             // Desabilitar campo de busca
             $('.dataTables_filter input').prop('disabled', true);
 
-            // Desabilitar navegaÁ„o da paginaÁ„o
+            // Desabilitar navega√ß√£o da pagina√ß√£o
             $('#placarTable_wrapper .paginate_button').addClass('disabled').css('pointer-events', 'none');
             $('#placarTable_length select').prop('disabled', true);
 
-            // Desabilitar ordenaÁ„o
+            // Desabilitar ordena√ß√£o
             $('#placarTable thead th').css('pointer-events', 'none').addClass('sorting-disabled');
         });
 
-        // Reabilitar bot„o apÛs carregar dados
+        // Reabilitar bot√£o ap√≥s carregar dados
         placarTable.on('xhr.dt', function () {
             isLoadingData = false;
             hideLoading();
@@ -1278,15 +1278,15 @@
             // Reabilitar campo de busca
             $('.dataTables_filter input').prop('disabled', false);
 
-            // Reabilitar navegaÁ„o da paginaÁ„o
+            // Reabilitar navega√ß√£o da pagina√ß√£o
             $('#placarTable_wrapper .paginate_button').removeClass('disabled').css('pointer-events', '');
             $('#placarTable_length select').prop('disabled', false);
 
-            // Reabilitar ordenaÁ„o
+            // Reabilitar ordena√ß√£o
             $('#placarTable thead th').css('pointer-events', '').removeClass('sorting-disabled');
         });
 
-        // Reabilitar bot„o em caso de erro
+        // Reabilitar bot√£o em caso de erro
         placarTable.on('error.dt', function () {
             isLoadingData = false;
             hideLoading();
@@ -1295,11 +1295,11 @@
             // Reabilitar campo de busca
             $('.dataTables_filter input').prop('disabled', false);
 
-            // Reabilitar navegaÁ„o da paginaÁ„o
+            // Reabilitar navega√ß√£o da pagina√ß√£o
             $('#placarTable_wrapper .paginate_button').removeClass('disabled').css('pointer-events', '');
             $('#placarTable_length select').prop('disabled', false);
 
-            // Reabilitar ordenaÁ„o
+            // Reabilitar ordena√ß√£o
             $('#placarTable thead th').css('pointer-events', '').removeClass('sorting-disabled');
         });
     }
