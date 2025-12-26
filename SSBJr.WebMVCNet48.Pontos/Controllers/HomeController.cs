@@ -35,6 +35,11 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
 
         private const string CONSULTA_PLACA_CACHE_KEY_PREFIX = "ConsultaPlaca_";
 
+        private string BuildCacheKey(MotoristaPlacaFilter filter)
+        {
+            return CONSULTA_PLACA_CACHE_KEY_PREFIX;
+        }
+
         [HttpPost]
         public JsonResult GetConsultaPlacaData(MotoristaPlacaFilter filter)
         {
@@ -61,89 +66,64 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
 
                 string outQuery = "";
 
-                // Decisão de alto volume baseada em dados em cache da sessão
-                var cacheKey = CONSULTA_PLACA_CACHE_KEY_PREFIX;
+                var cacheKey = BuildCacheKey(filter);
                 var sessionData = Session[cacheKey] as List<MotoristaPlacaResult>;
-                var isHighVolume = sessionData != null && sessionData.Count > 250000;
+                var fromCache = sessionData != null;
+
+                List<MotoristaPlacaResult> allData;
+                if (fromCache)
+                {
+                    allData = sessionData;
+                    outQuery = "FROM CACHE";
+                }
+                else
+                {
+                    allData = _repository.GetConsultaPlacaData(filter, out outQuery) ?? new List<MotoristaPlacaResult>();
+                    Session[cacheKey] = allData;
+                }
 
                 List<MotoristaPlacaResult> pagedData;
                 int recordsFiltered;
                 int recordsTotal;
-                bool fromCache = false;
 
-                if (isHighVolume)
+                var filteredData = allData.AsQueryable();
+                if (filter.Search != null && !string.IsNullOrEmpty(filter.Search))
                 {
-                    // Alto volume: buscar página diretamente do banco, sem busca textual e sem cache
-                    pagedData = _repository.GetConsultaPlacaDataPaged(filter, filter.Start, filter.Length > 0 ? filter.Length : 50, out outQuery);
-                    recordsFiltered = sessionData.Count; // usa tamanho do cache existente como total conhecido
-                    recordsTotal = sessionData.Count;
+                    var searchTerm = filter.Search;
+                    var comparison = StringComparison.CurrentCultureIgnoreCase;
+
+                    filteredData = filteredData.Where(x =>
+                        (x.Empresa != null && x.Empresa.IndexOf(searchTerm, comparison) >= 0) ||
+                        (x.Placa != null && x.Placa.IndexOf(searchTerm, comparison) >= 0) ||
+                        (x.Motorista != null && x.Motorista.IndexOf(searchTerm, comparison) >= 0) ||
+                        (x.Localizacao != null && x.Localizacao.IndexOf(searchTerm, comparison) >= 0) ||
+                        (x.Situacao != null && x.Situacao.IndexOf(searchTerm, comparison) >= 0)
+                    );
                 }
-                else
+
+                recordsFiltered = filteredData.Count();
+
+                // Aplicar ordenação
+                if (filter.Order != null && filter.Order.Count > 0 && filter.Columns != null)
                 {
-                    List<MotoristaPlacaResult> allData = null;
-
-                    if (filter.Draw > 1 && sessionData != null)
+                    foreach (var order in filter.Order)
                     {
-                        allData = sessionData;
-                        outQuery = "FROM CACHE";
-                        fromCache = true;
-                    }
-                    else
-                    {
-                        // Buscar do banco
-                        allData = _repository.GetConsultaPlacaData(filter, out outQuery);
-
-                        // Se exceder 250k, não salvar na sessão e tratar como alto volume nas próximas requisições
-                        if (allData != null && allData.Count > 250000)
+                        if (order.Column >= 0 && order.Column < filter.Columns.Count)
                         {
-                            Session[cacheKey] = null;
-                        }
-                        else
-                        {
-                            Session[cacheKey] = allData;
+                            var columnName = filter.Columns[order.Column].Data;
+                            var ascending = order.Dir?.Equals("asc", StringComparison.OrdinalIgnoreCase) ?? false;
+                            filteredData = ApplyOrdering(filteredData, columnName, ascending);
                         }
                     }
-
-                    // Aplicar busca global do DataTable (apenas baixo volume)
-                    var filteredData = allData.AsQueryable();
-                    if (filter.Search != null && !string.IsNullOrEmpty(filter.Search))
-                    {
-                        var searchTerm = filter.Search;
-                        var comparison = StringComparison.CurrentCultureIgnoreCase;
-
-                        filteredData = filteredData.Where(x =>
-                            (x.Empresa != null && x.Empresa.IndexOf(searchTerm, comparison) >= 0) ||
-                            (x.Placa != null && x.Placa.IndexOf(searchTerm, comparison) >= 0) ||
-                            (x.Motorista != null && x.Motorista.IndexOf(searchTerm, comparison) >= 0) ||
-                            (x.Localizacao != null && x.Localizacao.IndexOf(searchTerm, comparison) >= 0) ||
-                            (x.Situacao != null && x.Situacao.IndexOf(searchTerm, comparison) >= 0)
-                        );
-                    }
-
-                    recordsFiltered = filteredData.Count();
-
-                    // Aplicar ordenação
-                    if (filter.Order != null && filter.Order.Count > 0 && filter.Columns != null)
-                    {
-                        foreach (var order in filter.Order)
-                        {
-                            if (order.Column >= 0 && order.Column < filter.Columns.Count)
-                            {
-                                var columnName = filter.Columns[order.Column].Data;
-                                var ascending = order.Dir?.Equals("asc", StringComparison.OrdinalIgnoreCase) ?? false;
-                                filteredData = ApplyOrdering(filteredData, columnName, ascending);
-                            }
-                        }
-                    }
-
-                    // Aplicar paginação
-                    pagedData = filteredData
-                        .Skip(filter.Start)
-                        .Take(filter.Length > 0 ? filter.Length : 50)
-                        .ToList();
-
-                    recordsTotal = allData?.Count ?? 0;
                 }
+
+                // Aplicar paginação
+                pagedData = filteredData
+                    .Skip(filter.Start)
+                    .Take(filter.Length > 0 ? filter.Length : 50)
+                    .ToList();
+
+                recordsTotal = allData?.Count ?? 0;
 
                 var json = Json(new
                 {
@@ -152,8 +132,7 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                     recordsFiltered = recordsFiltered,
                     data = pagedData,
                     query = outQuery,
-                    cached = !isHighVolume && fromCache,
-                    highVolume = isHighVolume
+                    cached = fromCache
                 });
 
                 json.MaxJsonLength = int.MaxValue;
@@ -282,41 +261,23 @@ namespace SSBJr.WebMVCNet48.Pontos.Controllers
                     Placa = placa
                 };
 
-                // Gerar nome do arquivo
+                var cacheKey = BuildCacheKey(filter);
+                var allData = Session[cacheKey] as List<MotoristaPlacaResult>;
+                if (allData == null)
+                {
+                    string outQuery;
+                    allData = _repository.GetConsultaPlacaData(filter, out outQuery) ?? new List<MotoristaPlacaResult>();
+                    Session[cacheKey] = allData;
+                }
+
                 var fileName = $"STI - Pontos por Motorista.xlsx";
 
-                // Configurar Response
                 Response.Clear();
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 Response.AddHeader("Content-Disposition", $"attachment; filename=\"{fileName}\"");
                 Response.BufferOutput = false;
 
-                // Estratégia baseada em cache da sessão
-                var cacheKey = CONSULTA_PLACA_CACHE_KEY_PREFIX;
-                var sessionData = Session[cacheKey] as List<MotoristaPlacaResult>;
-
-                if (sessionData != null && sessionData.Count > 250000)
-                {
-                    // Alto volume: streaming direto do banco, sem materializar lista
-                    string outQuery;
-                    var streamEnumerable = _repository.GetConsultaPlacaDataStream(filter, out outQuery);
-                    ExcelWebExportHelper.ExportToExcel(Response.OutputStream, streamEnumerable, "Pontos por Motorista");
-                }
-                else
-                {
-                    // Baixo volume: usar cache se disponível; caso exceda, não salvar na sessão
-                    List<MotoristaPlacaResult> allData = sessionData;
-                    if (allData == null)
-                    {
-                        string outQuery;
-                        allData = _repository.GetConsultaPlacaData(filter, out outQuery);
-                        if (allData != null && allData.Count <= 250000)
-                        {
-                            Session[cacheKey] = allData;
-                        }
-                    }
-                    ExcelWebExportHelper.ExportToExcel(Response.OutputStream, allData, "Pontos por Motorista");
-                }
+                ExcelWebExportHelper.ExportToExcel(Response.OutputStream, allData, "Pontos por Motorista");
 
                 Response.Flush();
                 Response.End();

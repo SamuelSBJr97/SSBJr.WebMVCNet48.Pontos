@@ -25,6 +25,21 @@ namespace Pontos
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new Bundle("~/bundles/home-deps").Include(
+                        "~/Scripts/jquery-3.7.1.min.js",
+                        "~/Scripts/popper.min.js",
+                        "~/Scripts/bootstrap.5.2.3.min.js",
+                        "~/Scripts/moment.2.29.4.min.js",
+                        "~/Scripts/daterangepicker.min.js",
+                        "~/Scripts/jquery.dataTables.1.13.6.min.js",
+                        "~/Scripts/datetime-moment.js",
+                        "~/Scripts/dataTables.buttons.2.4.2.min.js",
+                        "~/Scripts/buttons.bootstrap5.2.4.2.min.js",
+                        "~/Scripts/buttons.html5.2.4.2.min.js",
+                        "~/Scripts/bootstrap-select.1.13.18.min.js",
+                        "~/Scripts/defaults-pt_BR.min.js",
+                        "~/Scripts/sweetalert2.11.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

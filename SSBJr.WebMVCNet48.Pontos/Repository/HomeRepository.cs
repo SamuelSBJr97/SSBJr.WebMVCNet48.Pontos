@@ -4,6 +4,7 @@ using SSBJr.WebNet48.Pontos.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -251,6 +252,65 @@ namespace SSBJr.WebMVCNet48.Pontos.Repository
                 {
                     return connection.Query<MotoristaPlacaResult>(query, parameters, commandTimeout: 1200).ToList();
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Busca dados de placas/pontos filtrados por motorista ou RFID com paginação
+        /// </summary>
+        public List<MotoristaPlacaResult> GetConsultaPlacaDataADO(MotoristaPlacaFilter filter, out string outQuery)
+        {
+            try
+            {
+                var (whereClause, parameters) = BuildConsultaPlacaWhere(filter);
+                var orderByClause = BuildConsultaPlacaOrderBy(filter);
+                var select = BuildConsultaPlacaSelect(includeCount: true);
+                string query = $@"
+                    {select}
+                    WHERE {whereClause}
+                    ORDER BY {orderByClause}";
+
+                outQuery = InterpolateDebugQuery(query, parameters);
+
+                var results = new List<MotoristaPlacaResult>();
+
+                using (var conn = new SqlConnection(Server))
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    foreach (var paramName in parameters.ParameterNames)
+                    {
+                        cmd.Parameters.AddWithValue(paramName, parameters.Get<object>(paramName) ?? DBNull.Value);
+                    }
+
+                    conn.Open();
+
+                    using (var reader = cmd.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.CloseConnection))
+                    {
+                        while (reader.Read())
+                        {
+                            results.Add(new MotoristaPlacaResult
+                            {
+                                Empresa = reader["Empresa"] == DBNull.Value ? string.Empty : reader["Empresa"].ToString(),
+                                Placa = reader["Placa"] == DBNull.Value ? string.Empty : reader["Placa"].ToString(),
+                                Emissao = reader["Emissao"] == DBNull.Value ? string.Empty : reader["Emissao"].ToString(),
+                                Localizacao = reader["Localizacao"] == DBNull.Value ? string.Empty : reader["Localizacao"].ToString(),
+                                Motorista = reader["Motorista"] == DBNull.Value ? string.Empty : reader["Motorista"].ToString(),
+                                Voltagem = reader["Voltagem"] == DBNull.Value ? string.Empty : reader["Voltagem"].ToString(),
+                                Situacao = reader["Situacao"] == DBNull.Value ? string.Empty : reader["Situacao"].ToString(),
+                                Latitude = reader["Latitude"] == DBNull.Value ? string.Empty : reader["Latitude"].ToString(),
+                                Longitude = reader["Longitude"] == DBNull.Value ? string.Empty : reader["Longitude"].ToString(),
+                                Velocidade = reader["Velocidade"] == DBNull.Value ? string.Empty : reader["Velocidade"].ToString()
+                            });
+                        }
+                    }
+                }
+
+                return results;
             }
             catch (Exception ex)
             {
