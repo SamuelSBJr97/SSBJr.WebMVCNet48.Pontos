@@ -135,7 +135,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SimpleDependencyResolver.cs" />
-    <Compile Include="Controllers\EmpDivController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VeiculoController.cs" />
     <Compile Include="Controllers\PontosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -231,7 +232,7 @@
     <Content Include="Scripts\sweetalert2.11.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\View\EmpDiv\index.js" />
+    <Content Include="Scripts\View\Veiculo\index.js" />
     <Content Include="Scripts\View\Pontos\index.js" />
     <Content Include="Scripts\jquery-3.7.0.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -276,7 +277,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Pontos\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\EmpDiv\Index.cshtml" />
+    <Content Include="Views\Veiculo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

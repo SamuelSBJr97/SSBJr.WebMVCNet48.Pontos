@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace Pontos.Controllers
 {
-    public class EmpDivController : Controller
+    public class HomeController : Controller
     {
-        // GET: EmpDiv
+        // GET: Home
         public ActionResult Index()
         {
             return View();

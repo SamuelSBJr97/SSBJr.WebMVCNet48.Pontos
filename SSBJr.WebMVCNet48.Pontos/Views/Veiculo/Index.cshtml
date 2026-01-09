@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="@Url.Action("Test", "Veiculo")" method="post">
+    <input type="hidden" id="Id" />
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h4 class="text-left">Veículos de Empresas/Divisões Associados</h4>
+        </div>
+    </div>
+
+    <!-- Linha para Empresas -->
+    <div class="row mb-4">
+        <div class="col-12 mb-2">
+            <h5 class="text-left">Empresas</h5>
+        </div>
+
+        <!-- Empresas (Esquerda) -->
+        <div class="col-12 col-md-5 px-2 mb-3 mb-md-0">
+            <label for="selectVeiculosEmp">Veículos de Empresas</label>
+            <input class="form-control mb-2" id="filselectVeiculosEmp"
+                   placeholder="Filtrar empresa..." />
+            <select class="form-control" id="selectVeiculosEmp" size="6" multiple>
+            </select>
+        </div>
+
+        <!-- Botões de Ação Empresa (Meio) -->
+        <div class="col-12 col-md-2 d-flex align-items-center justify-content-center px-1 mb-3 mb-md-0">
+            <div class="btn-group-vertical" role="group" aria-label="Botões Empresa" style="margin-top: 30px;">
+                <button type="button" class="btn btn-success"
+                        id="btnEmpresaAdicionar" title="Adicionar empresa selecionada">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-success"
+                        id="btnEmpresaAdicionarTodos" title="Adicionar todas as empresas">
+                    <i class="fa fa-angle-double-right"></i>
+                </button>
+                <button type="button" class="btn btn-warning" id="btnEmpresaDesassociar" data-toggle="tooltip"
+                        data-placement="top" title="Remover empresas selecionadas">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+                <button type="button" class="btn btn-warning" id="btnEmpresaDesassociarTodos" data-toggle="tooltip"
+                        data-placement="top" title="Remover todas as empresas">
+                    <i class="fa fa-angle-double-left"></i>
+                </button>
+                <button type="button" class="btn btn-info" id="btnEmpresaLocalizar" data-toggle="tooltip"
+                        data-placement="top" title="Localizar empresas das divisões associadas selecionadas">
+                    <i class="fa fa-search"></i>
+                </button>
+                <button type="button" class="btn btn-default" id="btnEmpresaLimparSelecao" data-toggle="tooltip"
+                        data-placement="top" title="Limpar seleção">
+                    <i class="fa fa-eraser"></i>
+                </button>
+                <button type="button" class="btn btn-primary" id="btnEmpresaRecarregar" data-toggle="tooltip"
+                        data-placement="top" title="Recarregar empresas">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Empresas Associadas (Direita) -->
+        <div class="col-12 col-md-5 px-2 mb-3 mb-md-0">
+            <label for="selectVeiculosEmpAssoci">
+                Veículos de Empresas Associadas <span class="badge badge-success"
+                                                      id="quantidadeEmpAssociados">0</span>
+            </label>
+            <input class="form-control mb-2" id="filselectVeiculosEmpAssoci"
+                   placeholder="Filtrar empresa..." />
+            <select class="form-control" id="selectVeiculosEmpAssoci" size="6" multiple>
+            </select>
+        </div>
+    </div>
+
+    <!-- Linha para Divisões -->
+    <div class="row mb-4">
+        <div class="col-12 mb-2">
+            <h5 class="text-left">Divisões</h5>
+        </div>
+
+        <!-- Divisões (Esquerda) -->
+        <div class="col-12 col-md-5 px-2 mb-3 mb-md-0">
+            <label for="selectVeiculosDiv">Veículos de Divisões</label>
+            <input class="form-control mb-2" id="filselectVeiculosDiv"
+                   placeholder="Filtrar divisão..." />
+            <select class="form-control" id="selectVeiculosDiv" size="6" multiple>
+            </select>
+        </div>
+
+        <!-- Botões de Ação Divisão (Meio) -->
+        <div class="col-12 col-md-2 d-flex align-items-center justify-content-center px-1 mb-3 mb-md-0">
+            <div class="btn-group-vertical" role="group" aria-label="Botões Divisão" style="margin-top: 30px;">
+                <button type="button" class="btn btn-success"
+                        id="btnDivisaoAdicionar" title="Adicionar divisão selecionada">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-success"
+                        id="btnDivisaoAdicionarTodos" title="Adicionar todas as divisões">
+                    <i class="fa fa-angle-double-right"></i>
+                </button>
+                <button type="button" class="btn btn-warning" id="btnDivisaoDesassociar" data-toggle="tooltip"
+                        data-placement="top" title="Remover divisões selecionadas">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+                <button type="button" class="btn btn-warning" id="btnDivisaoDesassociarTodos" data-toggle="tooltip"
+                        data-placement="top" title="Remover todas as divisões">
+                    <i class="fa fa-angle-double-left"></i>
+                </button>
+                <button type="button" class="btn btn-info" id="btnDivisaoLocalizar" data-toggle="tooltip"
+                        data-placement="top" title="Localizar divisões das empresas associadas selecionadas">
+                    <i class="fa fa-search"></i>
+                </button>
+                <button type="button" class="btn btn-default" id="btnDivisaoLimparSelecao" data-toggle="tooltip"
+                        data-placement="top" title="Limpar seleção">
+                    <i class="fa fa-eraser"></i>
+                </button>
+                <button type="button" class="btn btn-primary" id="btnDivisaoRecarregar" data-toggle="tooltip"
+                        data-placement="top" title="Recarregar divisões">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Divisões Associadas (Direita) -->
+        <div class="col-12 col-md-5 px-2 mb-3 mb-md-0">
+            <label for="selectVeiculosDivAssoci">
+                Divisões Associadas <span class="badge badge-success"
+                                          id="quantidadeDivAssociados">0</span>
+            </label>
+            <input class="form-control mb-2" id="filselectVeiculosDivAssoci"
+                   placeholder="Filtrar divisão..." />
+            <select class="form-control" id="selectVeiculosDivAssoci" size="6" multiple>
+            </select>
+        </div>
+    </div>
+
+    <!-- Selects Ocultos para Submissão do Formulário -->
+    <div style="display: none;">
+        <!-- Empresas -->
+        <select name="selectOcVeiculosEmpAssoci" id="selectVeiculosEmpAssociHidden" multiple></select>
+        <select name="selectOcVeiculosEmpRem" id="selectVeiculosEmpRemHidden" multiple></select>
+
+        <!-- Divisões -->
+        <select name="selectOcVeiculosDivAssoci" id="selectVeiculosDivAssociHidden" multiple></select>
+        <select name="selectOcVeiculosDivRem" id="selectVeiculosDivRemHidden" multiple></select>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/veiculo")
+}

@@ -39,8 +39,8 @@ namespace Pontos
                         "~/Scripts/sweetalert2.11.min.js",
                         "~/Scripts/View/Pontos/index.js"));
 
-            bundles.Add(new Bundle("~/bundles/empdiv").Include(
-                        "~/Scripts/View/EmpDiv/index.js"));
+            bundles.Add(new Bundle("~/bundles/veiculo").Include(
+                        "~/Scripts/View/Veiculo/index.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
