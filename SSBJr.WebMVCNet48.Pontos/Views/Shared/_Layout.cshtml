@@ -32,6 +32,13 @@
         </footer>
     </div>
 
+    <!-- Load jQuery + Popper v1 + Bootstrap 4 from CDN to keep compatibility with bootstrap-select v1.13.18 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-..." crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+
+    @Scripts.Render("~/bundles/home")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

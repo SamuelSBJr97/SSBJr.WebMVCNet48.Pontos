@@ -25,10 +25,8 @@ namespace Pontos
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new Bundle("~/bundles/home-deps").Include(
-                        "~/Scripts/jquery-3.7.1.min.js",
-                        "~/Scripts/popper.min.js",
-                        "~/Scripts/bootstrap.5.2.3.min.js",
+            // Bundle 'Pontos' agora carrega apenas plugins que não são responsáveis por prover jQuery/Bootstrap
+            bundles.Add(new Bundle("~/bundles/pontos").Include(
                         "~/Scripts/moment.2.29.4.min.js",
                         "~/Scripts/daterangepicker.min.js",
                         "~/Scripts/jquery.dataTables.1.13.6.min.js",
@@ -37,8 +35,12 @@ namespace Pontos
                         "~/Scripts/buttons.bootstrap5.2.4.2.min.js",
                         "~/Scripts/buttons.html5.2.4.2.min.js",
                         "~/Scripts/bootstrap-select.1.13.18.min.js",
-                        "~/Scripts/defaults-pt_BR.min.js",
-                        "~/Scripts/sweetalert2.11.min.js"));
+                        "~/Scripts/bootstrap-select-i18n-pt_BR.min.js",
+                        "~/Scripts/sweetalert2.11.min.js",
+                        "~/Scripts/View/Pontos/index.js"));
+
+            bundles.Add(new Bundle("~/bundles/empdiv").Include(
+                        "~/Scripts/View/EmpDiv/index.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

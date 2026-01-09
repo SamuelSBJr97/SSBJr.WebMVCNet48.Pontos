@@ -135,7 +135,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SimpleDependencyResolver.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\EmpDivController.cs" />
+    <Compile Include="Controllers\PontosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +194,7 @@
     </Content>
     <Content Include="Dockerfile" />
     <Content Include=".dockerignore" />
+    <Content Include="Scripts\bootstrap5-dropdown-jquery-adapter.js" />
     <Content Include="Scripts\buttons.bootstrap5.2.4.2.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -229,7 +231,8 @@
     <Content Include="Scripts\sweetalert2.11.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\View\Index\index.js" />
+    <Content Include="Scripts\View\EmpDiv\index.js" />
+    <Content Include="Scripts\View\Pontos\index.js" />
     <Content Include="Scripts\jquery-3.7.0.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -271,7 +274,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Pontos\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\EmpDiv\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

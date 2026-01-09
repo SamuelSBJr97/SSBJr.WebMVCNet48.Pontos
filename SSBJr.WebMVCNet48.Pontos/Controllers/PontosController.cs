@@ -11,16 +11,16 @@ using System.Web.Mvc;
 
 namespace SSBJr.WebMVCNet48.Pontos.Controllers
 {
-    public class HomeController : Controller
+    public class PontosController : Controller
     {
         private readonly HomeRepository _repository;
 
-        public HomeController()
+        public PontosController()
             : this(DependencyResolver.Current.GetService<HomeRepository>())
         {
         }
 
-        public HomeController(HomeRepository repository)
+        public PontosController(HomeRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
